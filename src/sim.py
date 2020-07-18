@@ -13,9 +13,11 @@ Events = typing.Dict[str, Impact]
 
 
 class Sim:
-    def __init__(self, bank_account: BankAccount) -> None:
+    def __init__(self, bank_account: BankAccount,
+                 stock_market_rate_of_return=3e-2) -> None:
         self.bank = bank_account
         self.all_events = list()
+        self.stock_market_rate_of_return = stock_market_rate_of_return
 
     def _add(self, events: typing.List[typing.Tuple[datetime.date, int]]):
         for event in events:
@@ -31,7 +33,9 @@ class Sim:
 
     def run(self):
         for date in (TODAY + datetime.timedelta(days=i) for i in range(365*30)):
-            self.bank.appreciate(datetime.timedelta(days=1))
+            self.bank.appreciate(
+                time=datetime.timedelta(days=1),
+                stock_market_rate_of_return=self.stock_market_rate_of_return)
             while self.all_events and self.all_events[0][0] <= date:
                 self.bank.add(heapq.heappop(self.all_events)[1])
             if self.bank.val < 0:
