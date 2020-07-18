@@ -1,8 +1,7 @@
-from datetime import datetime
 import typing
 import datetime
 
 
 class Impact:
-    def events(self) -> typing.List[typing.Tuple[datetime.date, int]]:
+    def events(self) -> typing.List[typing.Tuple[datetime.datetime.date, int]]:
         pass
