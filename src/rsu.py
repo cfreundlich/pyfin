@@ -11,7 +11,7 @@ NOW = datetime.datetime.now().date()
 FOUR_YEAR = datetime.timedelta(days=365.25 * 4)
 
 
-class RestrictedStock:
+class RestrictedStock(Impact):
     POSSIBLE_VEST_DAYS = [
         datetime.date(year=year, month=month, day=5)
         for year in range(NOW.year, NOW.year + 10)
@@ -27,7 +27,7 @@ class RestrictedStock:
     def events(self):
         less_tax = (1 - self.tax_rate)
         events = [(date, self.share_price(date) * shares * less_tax)
-                  for date, shares in self._VESTING_SCHEDULE]
+                  for date, shares in self._vesting_schedule()]
         if self.last_day:
             return [(date, amount) for date, amount in events
                     if date < self.last_day]
@@ -36,19 +36,24 @@ class RestrictedStock:
     def share_price(self, future_date):
         return self.init_price
 
-    def _vesting_schedule(self):
+    def _read_etrade(self) -> pd.DataFrame:
         fpath = os.path.join(os.path.curdir, 'data_inputs', 'rsu.xlsx')
         xl = pd.ExcelFile(fpath)
-        df = xl.parse('Unvested')
+        return xl.parse('Unvested')
+
+    def _vesting_schedule(self):
+
         events = []
-        for name, group in df.groupby('Plan Type'):
+        for name, group in self._read_etrade().groupby('Plan Type'):
             if name != 'Rest. Stock':
                 LOGGER.warning('Unrecognized plan type: %s', name)
+                continue
 
             for _, row in group.iterrows():
-                grant_day = dateutil.parser.parse(row['Grant Date'])
+                grant_day = dateutil.parser.parse(row['Grant Date']).date()
                 runs_out_on = grant_day + FOUR_YEAR
                 vest_dates = [day for day in self.POSSIBLE_VEST_DAYS
                               if NOW <= day <= runs_out_on]
                 amount = row['Unvested Qty.'] / len(vest_dates)
                 events += [(day, amount) for day in vest_dates]
+        return events
