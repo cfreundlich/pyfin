@@ -3,7 +3,7 @@ from .ongoing_fixed_impact import OngoingFixedImpact
 
 
 class CollegeTuition(OngoingFixedImpact):
-    PERIOD = datetime.timedelta(days=30*6)
+    PERIOD = datetime.timedelta(days=365/2)
 
     def _adjusted(self):
         return -self.yearly_amount

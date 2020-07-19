@@ -1,3 +1,4 @@
 env
 *.pyc
 my_model.py
+data_inputs/*.xlsx
