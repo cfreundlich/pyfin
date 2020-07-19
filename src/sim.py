@@ -1,4 +1,5 @@
 import datetime
+import logging
 import heapq
 import typing
 import matplotlib.pyplot as plt
@@ -6,6 +7,7 @@ from .bank_account import BankAccount
 from .impact import Impact
 
 
+LOGGER = logging.getLogger()
 TODAY = datetime.datetime.now().date()
 
 
@@ -27,8 +29,8 @@ class Sim:
 
         for name, source in events.items():
             new_events = source.events()
-            print(f'Adding {len(new_events)} cash impacts due to {name}')
-            print(f'Last is ${new_events[-1][1]} on {new_events[-1][0]}')
+            LOGGER.info(f'Adding {len(new_events)} cash impacts due to {name}')
+            LOGGER.info(f'Last is ${new_events[-1][1]} on {new_events[-1][0]}')
             self._add(new_events)
 
     def run(self):
@@ -41,8 +43,7 @@ class Sim:
             if self.bank.val < 0:
                 break
 
-    def plot(self):
+    def plot(self, label=None):
         plt.plot([date for date, _ in self.bank.history],
-                 [money for _, money in self.bank.history])
-        plt.grid()
-        plt.title('Liquid Cash Balance')
+                 [money for _, money in self.bank.history],
+                 label=label)

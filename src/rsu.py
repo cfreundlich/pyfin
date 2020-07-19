@@ -18,7 +18,6 @@ class RestrictedStock(Impact):
         for month in [3, 6, 9, 12]
     ]
 
-
     def __init__(self, init_price, last_day=None, tax_rate=0.4) -> None:
         self.last_day = last_day
         self.init_price = init_price
