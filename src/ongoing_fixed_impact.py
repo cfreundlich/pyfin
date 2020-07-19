@@ -7,7 +7,7 @@ TODAY = datetime.datetime.now().date()
 DEAD = datetime.date(day=1, month=1, year=2088)
 
 
-class OngoingFixedImpact(Impact):
+class OngoingImpact(Impact):
     PERIOD = datetime.timedelta(days=1)
 
     def __init__(self, yearly_amount, start=TODAY, end=DEAD) -> None:
@@ -19,12 +19,12 @@ class OngoingFixedImpact(Impact):
         return self.PERIOD / YEAR
 
     def events(self):
-        return [(date, self._amount()) for date in self._event_days()]
+        return [(date, self._amount(date)) for date in self._event_days()]
 
-    def _amount(self):
-        return round(self._adjusted() * self._divided_up())
+    def _amount(self, date):
+        return round(self._adjusted(date) * self._divided_up())
 
-    def _adjusted(self):
+    def _adjusted(self, date):
         return self.yearly_amount
 
     def _n_events(self):

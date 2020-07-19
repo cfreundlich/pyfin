@@ -26,3 +26,14 @@ class SalaryTestCase(unittest.TestCase):
             26,
             places=0
         )
+
+    def test_wage_growth(self):
+        salary = src.salary.Salary(
+            yearly_amount=1e5,
+            start=NOW,
+            end=NOW + 2*YEAR,
+            yearly_wage_growth=1e-1
+        )
+        self.assertAlmostEqual(salary.events()[-1][1],
+                               1.1 * salary.events()[0][1],
+                               places=-1)

@@ -1,11 +1,11 @@
 import datetime
-from .ongoing_fixed_impact import OngoingFixedImpact
+from .ongoing_fixed_impact import OngoingImpact
 
 
-class CollegeTuition(OngoingFixedImpact):
+class CollegeTuition(OngoingImpact):
     PERIOD = datetime.timedelta(days=365/2)
 
-    def _adjusted(self):
+    def _adjusted(self, date):
         return -self.yearly_amount
 
     def __init__(self, start, yearly_tuition) -> None:
