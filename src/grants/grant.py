@@ -1,5 +1,6 @@
 import datetime
 import typing
+import src.today
 
 
 class Grant:
@@ -8,18 +9,17 @@ class Grant:
 
     def __init__(self,
                  grant_date,
-                 total_shares,
+                 unvested_shares,
                  schedule='quarterly',
                  duration_years=4) -> None:
-        self.grant_date = grant_date
-        self.total_shares = total_shares
+        self.unvested_shares = unvested_shares
         self.schedule = schedule
         self.duration_years = duration_years
 
     @property
     def portion(self) -> float:
         # using fractional shares as an approximation
-        return self.total_shares / self._n_equal_vests
+        return self.unvested_shares / self._n_equal_vests
 
     @property
     def _n_equal_vests(self) -> int:
@@ -31,11 +31,11 @@ class Grant:
         return datetime.date(year=year, month=month, day=self.VEST_DAY)
 
     def _first_vest(self) -> datetime.date:
-        years = [self.grant_date.year + i for i in [0, 1]]
+        years = [src.today.today().year + i for i in [0, 1]]
         return next(
             self._vest_day(year=y, month=m) for y in years
             for m in self.VEST_MONTHS
-            if self._vest_day(year=y, month=m) > self.grant_date)
+            if self._vest_day(year=y, month=m) > src.today.today())
 
     def _next_vest(self, year: int, month: int) -> datetime.date:
         current_month_index = next(i for i, m in enumerate(self.VEST_MONTHS)

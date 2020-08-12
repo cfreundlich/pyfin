@@ -7,7 +7,8 @@ from .bank_account import BankAccount
 from .impact import Impact
 
 LOGGER = logging.getLogger()
-TODAY = datetime.datetime.now().date()
+import src.today
+TODAY = src.today.today()
 
 Events = typing.Dict[str, Impact]
 

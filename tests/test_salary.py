@@ -3,7 +3,8 @@ import datetime
 import src.salary
 
 
-NOW = datetime.datetime.now().date()
+import src.today
+TODAY = src.today.today()
 YEAR = datetime.timedelta(days=365)
 
 
@@ -11,18 +12,18 @@ class SalaryTestCase(unittest.TestCase):
     def test_cost(self):
         salary = src.salary.Salary(
             yearly_amount=1e5,
-            start=NOW,
-            end=NOW + YEAR
+            start= TODAY,
+            end= TODAY + YEAR
         )
         self.assertAlmostEqual(
             sum(amount for date, amount in salary.events()
-                if date < NOW + YEAR),
+                if date <  TODAY + YEAR),
             1e5 * (1 - salary.income_tax_rate),
             places=-3
         )
         self.assertAlmostEqual(
             sum(1 for date, _ in salary.events()
-                if date < NOW + YEAR),
+                if date <  TODAY + YEAR),
             26,
             places=0
         )
@@ -30,8 +31,8 @@ class SalaryTestCase(unittest.TestCase):
     def test_wage_growth(self):
         salary = src.salary.Salary(
             yearly_amount=1e5,
-            start=NOW,
-            end=NOW + 2*YEAR,
+            start= TODAY,
+            end= TODAY + 2*YEAR,
             yearly_wage_growth=1e-1
         )
         self.assertAlmostEqual(salary.events()[-1][1],

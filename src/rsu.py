@@ -4,14 +4,20 @@ from .impact import Impact
 import src.grants.etrade
 
 LOGGER = logging.getLogger()
-NOW = datetime.datetime.now().date()
+import src.today
+TODAY = src.today.today()
 
 
 class RestrictedStock(Impact):
-    def __init__(self, init_price, last_day=None, tax_rate=0.4) -> None:
+    def __init__(self,
+                 init_price,
+                 filename,
+                 last_day=None,
+                 tax_rate=0.4) -> None:
         self.last_day = last_day
         self.init_price = init_price
         self.tax_rate = tax_rate
+        self.filename = filename
 
     def events(self):
         less_tax = (1 - self.tax_rate)
@@ -25,7 +31,7 @@ class RestrictedStock(Impact):
     def share_price(self, future_date):
         return self.init_price
 
-    @staticmethod
-    def _rsu_events():
-        return [(day, grant.portion) for grant in src.grants.etrade.read()
+    def _rsu_events(self):
+        return [(day, grant.portion)
+                for grant in src.grants.etrade.read(self.filename)
                 for day in grant.vest_dates()]

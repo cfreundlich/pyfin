@@ -3,13 +3,14 @@ import unittest
 import src.mortgage
 
 
-NOW = datetime.datetime.now().date()
+import src.today
+TODAY = src.today.today()
 
 
 class MortgageTestCase(unittest.TestCase):
     def test_monthly_payment(self):
         mortgage = src.mortgage.Mortgage(purchase_price=2.5e6,
-                                         closing_date=NOW,
+                                         closing_date= TODAY,
                                          downpayment_help=0,
                                          downpayment_pct=0.2,
                                          interest_rate=3.242e-2,
@@ -19,7 +20,7 @@ class MortgageTestCase(unittest.TestCase):
 
     def test_downpayment(self):
         mortgage = src.mortgage.Mortgage(purchase_price=2.5e6,
-                                         closing_date=NOW,
+                                         closing_date= TODAY,
                                          downpayment_help=0,
                                          downpayment_pct=0.2,
                                          interest_rate=3.242e-2,
@@ -29,7 +30,7 @@ class MortgageTestCase(unittest.TestCase):
 
     def test_downpayment_help(self):
         mortgage = src.mortgage.Mortgage(purchase_price=2.5e6,
-                                         closing_date=NOW,
+                                         closing_date= TODAY,
                                          downpayment_help=1e4,
                                          downpayment_pct=0.2,
                                          interest_rate=3.242e-2,

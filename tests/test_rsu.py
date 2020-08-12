@@ -6,7 +6,8 @@ import src.grants.etrade
 import src.grants.grant
 
 
-NOW = datetime.datetime.now().date()
+import src.today
+TODAY = src.today.today()
 
 
 class RSUTestCase(unittest.TestCase):
@@ -20,10 +21,10 @@ class RSUTestCase(unittest.TestCase):
         self.addCleanup(patcher.stop)
 
     def test_single_unvested(self):
-        grants = [src.grants.grant.Grant(grant_date=NOW,
+        grants = [src.grants.grant.Grant(grant_date= TODAY,
                                          total_shares=100)]
         self.my_patch(grants, 'read', src.grants.etrade)
-        rsu = src.rsu.RestrictedStock(init_price=1e3)
+        rsu = src.rsu.RestrictedStock(init_price=1e3, filename='foo')
         self.assertEqual(
             len(rsu.events()), 16
         )
