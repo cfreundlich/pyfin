@@ -1,8 +1,9 @@
 import unittest
 from unittest.mock import patch
 import datetime
-import pandas as pd
 import src.rsu
+import src.grants.etrade
+import src.grants.grant
 
 
 NOW = datetime.datetime.now().date()
@@ -19,12 +20,9 @@ class RSUTestCase(unittest.TestCase):
         self.addCleanup(patcher.stop)
 
     def test_single_unvested(self):
-        df = pd.DataFrame({
-            'Plan Type': ['Rest. Stock'],
-            'Grant Date': [NOW.isoformat()],
-            'Unvested Qty.': [100]
-        })
-        self.my_patch(df, '_read_etrade', src.rsu.RestrictedStock)
+        grants = [src.grants.grant.Grant(grant_date=NOW,
+                                         total_shares=100)]
+        self.my_patch(grants, 'read', src.grants.etrade)
         rsu = src.rsu.RestrictedStock(init_price=1e3)
         self.assertEqual(
             len(rsu.events()), 16

@@ -16,10 +16,12 @@ Events = typing.Dict[str, Impact]
 
 class Sim:
     def __init__(self, bank_account: BankAccount,
-                 stock_market_rate_of_return=3e-2) -> None:
+                 stock_market_rate_of_return=3e-2,
+                 days_to_simulate=365*10) -> None:
         self.bank = bank_account
         self.all_events = list()
         self.stock_market_rate_of_return = stock_market_rate_of_return
+        self.days_to_simulate = days_to_simulate
 
     def _add(self, events: typing.List[typing.Tuple[datetime.date, int]]):
         for event in events:
@@ -34,7 +36,9 @@ class Sim:
             self._add(new_events)
 
     def run(self):
-        for date in (TODAY + datetime.timedelta(days=i) for i in range(365*30)):
+        dates = (TODAY + datetime.timedelta(days=i)
+                 for i in range(self.days_to_simulate))
+        for date in dates:
             self.bank.appreciate(
                 time=datetime.timedelta(days=1),
                 stock_market_rate_of_return=self.stock_market_rate_of_return)
