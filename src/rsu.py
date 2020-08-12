@@ -3,13 +3,11 @@ import logging
 from .impact import Impact
 import src.grants.etrade
 
-
 LOGGER = logging.getLogger()
 NOW = datetime.datetime.now().date()
 
 
 class RestrictedStock(Impact):
-
     def __init__(self, init_price, last_day=None, tax_rate=0.4) -> None:
         self.last_day = last_day
         self.init_price = init_price
@@ -29,6 +27,5 @@ class RestrictedStock(Impact):
 
     @staticmethod
     def _rsu_events():
-        return [(day, grant.portion)
-                for grant in src.grants.etrade.read()
+        return [(day, grant.portion) for grant in src.grants.etrade.read()
                 for day in grant.vest_dates()]

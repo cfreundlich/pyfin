@@ -6,9 +6,7 @@ import typing
 import pandas as pd
 import src.grants.grant
 
-
 LOGGER = logging.getLogger()
-
 
 
 def _read_xls() -> pd.DataFrame:
@@ -23,6 +21,6 @@ def read() -> typing.Iterator[src.grants.grant.Grant]:
             LOGGER.warning('Unrecognized plan type: %s', name)
             continue
         for _, row in group.iterrows():
-            yield src.grants.grant.Grant(
-                grant_date=dateutil.parser.parse(row['Grant Date']).date(),
-                total_shares=row['Unvested Qty.'])
+            yield src.grants.grant.Grant(grant_date=dateutil.parser.parse(
+                row['Grant Date']).date(),
+                                         total_shares=row['Unvested Qty.'])

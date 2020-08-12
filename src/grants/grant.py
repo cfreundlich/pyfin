@@ -28,16 +28,14 @@ class Grant:
         raise NotImplementedError
 
     def _vest_day(self, year, month) -> datetime.date:
-        return datetime.date(year=year,
-                             month=month,
-                             day=self.VEST_DAY)
+        return datetime.date(year=year, month=month, day=self.VEST_DAY)
 
     def _first_vest(self) -> datetime.date:
         years = [self.grant_date.year + i for i in [0, 1]]
-        return next(self._vest_day(year=y, month=m)
-                    for y in years
-                    for m in self.VEST_MONTHS
-                    if self._vest_day(year=y, month=m) > self.grant_date)
+        return next(
+            self._vest_day(year=y, month=m) for y in years
+            for m in self.VEST_MONTHS
+            if self._vest_day(year=y, month=m) > self.grant_date)
 
     def _next_vest(self, year: int, month: int) -> datetime.date:
         current_month_index = next(i for i, m in enumerate(self.VEST_MONTHS)
@@ -58,4 +56,3 @@ class Grant:
             new_vest = self._next_vest(vest.year, vest.month)
             vest = new_vest
             yield new_vest
-

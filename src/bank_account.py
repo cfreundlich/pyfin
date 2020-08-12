@@ -9,8 +9,8 @@ class BankAccount:
 
     @staticmethod
     def _daily_compound_rate(stock_market_rate_of_return):
-        fraction = 1/365.25
-        rate = (1 + stock_market_rate_of_return) ** fraction
+        fraction = 1 / 365.25
+        rate = (1 + stock_market_rate_of_return)**fraction
         return rate - 1
 
     def appreciate(self, time, stock_market_rate_of_return=3e-2):
@@ -22,7 +22,7 @@ class BankAccount:
             Warning('Appreciation interval is not an exact multiple of 1 day')
 
         daily_rate = self._daily_compound_rate(stock_market_rate_of_return)
-        self.val *= (1 + daily_rate) ** time.days
+        self.val *= (1 + daily_rate)**time.days
         self.age += time
         self.history += [(self.age, self.val)]
 

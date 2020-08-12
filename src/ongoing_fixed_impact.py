@@ -1,7 +1,6 @@
 import datetime
 from .impact import Impact
 
-
 YEAR = datetime.timedelta(days=365)
 TODAY = datetime.datetime.now().date()
 DEAD = datetime.date(day=1, month=1, year=2088)

@@ -6,18 +6,17 @@ import matplotlib.pyplot as plt
 from .bank_account import BankAccount
 from .impact import Impact
 
-
 LOGGER = logging.getLogger()
 TODAY = datetime.datetime.now().date()
-
 
 Events = typing.Dict[str, Impact]
 
 
 class Sim:
-    def __init__(self, bank_account: BankAccount,
+    def __init__(self,
+                 bank_account: BankAccount,
                  stock_market_rate_of_return=3e-2,
-                 days_to_simulate=365*10) -> None:
+                 days_to_simulate=365 * 10) -> None:
         self.bank = bank_account
         self.all_events = list()
         self.stock_market_rate_of_return = stock_market_rate_of_return

@@ -2,13 +2,16 @@ import datetime
 import logging
 from .impact import Impact
 
-
 LOGGER = logging.getLogger()
 
 
 class Mortgage(Impact):
-    def __init__(self, purchase_price, closing_date, downpayment_help=0,
-                 downpayment_pct=0.2, interest_rate=3e-2,
+    def __init__(self,
+                 purchase_price,
+                 closing_date,
+                 downpayment_help=0,
+                 downpayment_pct=0.2,
+                 interest_rate=3e-2,
                  loan_term=360) -> None:
         self.purchase_price = purchase_price
         self.downpayment_help = downpayment_help
@@ -33,11 +36,13 @@ class Mortgage(Impact):
         return self.closing_date + datetime.timedelta(days=60)
 
     def _payment_dates(self):
-        return [self._first_payment + datetime.timedelta(days=30*i)
-                for i in range(self.loan_term)]
+        return [
+            self._first_payment + datetime.timedelta(days=30 * i)
+            for i in range(self.loan_term)
+        ]
 
     def _monthly(self):
-        scale = (1 + self._monthly_interest_rate) ** self.loan_term
+        scale = (1 + self._monthly_interest_rate)**self.loan_term
         denominator = scale - 1
         numerator = self._monthly_interest_rate * self._loan_amount * scale
         return round(numerator / denominator, 2)
@@ -55,5 +60,6 @@ class Mortgage(Impact):
 
     def events(self):
         monthly_payment = self._monthly()
-        monthlies = [(date, -monthly_payment) for date in self._payment_dates()]
+        monthlies = [(date, -monthly_payment)
+                     for date in self._payment_dates()]
         return [self._downpayment_event()] + monthlies
