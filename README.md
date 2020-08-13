@@ -5,13 +5,6 @@ The general idea is you create "event generators," like having a kid, that over 
 Take a look at the sample and create your own script to help with some important decision you need to make.
 For me, it was to decide if I could afford buying a big house using some RSUs that ended up being worth much more than I was expecting.
 
-## On data and APIs
-I manually copied in my personal data when I did this exercise.
-Its probably possible to do that with the bank APIs, but that was not worth it for me.
-
-I did download unvested stock information from etrade, and I included very rudimentary support for that.
-You will need to download a specific file from etrade and put it [here](./data_inputs) and tell the source code where to find it in your simulation.
-
 ## Sample Simulation
 You can try to simulate a fictional person's future net worth in [the sample](./house_upgrade_sample.py) as they contemplate selling their apartment and buying a big fancy house.
 This file tries to plot several scenarios based on if the fictional person gets fired or quits before all their RSUs vest, if the company's stock turns volitile, and a few other factors.
@@ -58,3 +51,12 @@ With the virtualenv activated,
 ```bash
 docker-compose run test
 ```
+
+
+# Input Data is tedious
+I manually copied in my personal data when I did this exercise.
+Its certainly possible to do that with the bank APIs, but that was not worth it for me.
+We are focussing on life-changing financial decisions, so automating the data pull served very little value.
+
+I did download unvested stock information from etrade, and I included very rudimentary support for that.
+You will need to download a specific file from etrade and put it [here](./data_inputs) and tell the source code where to find it in your simulation.
