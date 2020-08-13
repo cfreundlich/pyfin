@@ -1,6 +1,5 @@
 import datetime
 import typing
-import src.today
 
 
 class Grant:
@@ -15,11 +14,8 @@ class Grant:
         self.unvested_shares = unvested_shares
         self.schedule = schedule
         self.duration_years = duration_years
+        self.grant_date = grant_date
 
-    @property
-    def portion(self) -> float:
-        # using fractional shares as an approximation
-        return self.unvested_shares / self._n_equal_vests
 
     @property
     def _n_equal_vests(self) -> int:
@@ -31,11 +27,11 @@ class Grant:
         return datetime.date(year=year, month=month, day=self.VEST_DAY)
 
     def _first_vest(self) -> datetime.date:
-        years = [src.today.today().year + i for i in [0, 1]]
+        years = [self.grant_date.year + i for i in [0, 1]]
         return next(
             self._vest_day(year=y, month=m) for y in years
             for m in self.VEST_MONTHS
-            if self._vest_day(year=y, month=m) > src.today.today())
+            if self._vest_day(year=y, month=m) > self.grant_date)
 
     def _next_vest(self, year: int, month: int) -> datetime.date:
         current_month_index = next(i for i, m in enumerate(self.VEST_MONTHS)
@@ -49,10 +45,24 @@ class Grant:
 
         return self._vest_day(year=new_year, month=new_month)
 
-    def vest_dates(self) -> typing.Iterable[datetime.date]:
+    def _all_vest_dates(self) -> typing.Iterable[datetime.date]:
         vest = self._first_vest()
         yield vest
         for _ in range(self._n_equal_vests - 1):
             new_vest = self._next_vest(vest.year, vest.month)
             vest = new_vest
             yield new_vest
+
+    def _vest_dates(self, after):
+        if after is None:
+            return list(self._all_vest_dates())
+        return [d for d in self._all_vest_dates() if d >= after]
+
+    def get_unvested(self, after=None):
+        '''equally partitions to unvested amount among the vest dates
+        after a specified time and based on the initial grant date'''
+        vest_dates = self._vest_dates(after)
+        if not vest_dates:
+            return []
+        shares_per_vest = self.unvested_shares / len(vest_dates)
+        return zip(vest_dates, [shares_per_vest] * len(vest_dates))

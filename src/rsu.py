@@ -1,10 +1,10 @@
-import datetime
 import logging
 from .impact import Impact
 import src.grants.etrade
+import src.today
+
 
 LOGGER = logging.getLogger()
-import src.today
 TODAY = src.today.today()
 
 
@@ -32,6 +32,6 @@ class RestrictedStock(Impact):
         return self.init_price
 
     def _rsu_events(self):
-        return [(day, grant.portion)
+        return [vest
                 for grant in src.grants.etrade.read(self.filename)
-                for day in grant.vest_dates()]
+                for vest in grant.get_unvested(after=TODAY)]

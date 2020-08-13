@@ -1,12 +1,11 @@
 import unittest
 from unittest.mock import patch
-import datetime
 import src.rsu
 import src.grants.etrade
 import src.grants.grant
-
-
 import src.today
+
+
 TODAY = src.today.today()
 
 
@@ -21,8 +20,8 @@ class RSUTestCase(unittest.TestCase):
         self.addCleanup(patcher.stop)
 
     def test_single_unvested(self):
-        grants = [src.grants.grant.Grant(grant_date= TODAY,
-                                         total_shares=100)]
+        grants = [src.grants.grant.Grant(grant_date=TODAY,
+                                         unvested_shares=100)]
         self.my_patch(grants, 'read', src.grants.etrade)
         rsu = src.rsu.RestrictedStock(init_price=1e3, filename='foo')
         self.assertEqual(
