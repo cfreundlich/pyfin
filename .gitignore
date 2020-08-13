@@ -2,3 +2,4 @@ env
 *.pyc
 my_model.py
 data_inputs/*.xlsx
+!data_inputs/sample_etrade_unvested.xlsx
