@@ -107,7 +107,7 @@ EVENTS = dict(
                                    yearly_tuition=COLLEGE_TUITION_YEARLY)
 )
 
-
+# Simulating possible futures and adding plots
 plt.figure()
 sim_share_prices = [max(0, CURRENT_COMPANY_SHARE_PRICE + i*1e2)
                     for i in range(-2, 3)]
@@ -181,3 +181,5 @@ for purchase_price in prices:
 plt.title('Purchase Price ($M)')
 plt.ylabel('Liquid Assets ($)')
 plt.legend()
+
+plt.show()
