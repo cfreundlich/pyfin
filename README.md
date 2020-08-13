@@ -14,7 +14,7 @@ You will need to download a specific file from etrade and put it [here](./data_i
 
 ## Sample Simulation
 You can try to simulate a fictional person's future net worth in [the sample](./house_upgrade_sample.py) as they contemplate selling their apartment and buying a big fancy house.
-This file tries to plot several scenarios based on if the fictional person gets fired before all their RSUs vest, if the company's stock tanks, and a few other factors.
+This file tries to plot several scenarios based on if the fictional person gets fired or quits before all their RSUs vest, if the company's stock turns volitile, and a few other factors.
 ### Main assumptions for this simulation
 1. The person will not recieve any additional bonuses ever
 1. Living expenses are fairly high
