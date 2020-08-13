@@ -52,7 +52,7 @@ python -m unittest
 ```
 
 ## In a container
-If you prefer not to pollute you system, you can bash into the Dockerfile and run it from there, but you will be have to write a few extra lines of code to see figures from matplotlib.
+If you prefer, you can bash into the [Dockerfile](./Dockerfile) and run your simulations there, but you will be have to write a few extra lines of code to see figures from matplotlib.
 ### Testing
 With the virtualenv activated,
 ```bash
