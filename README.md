@@ -7,7 +7,7 @@ For me, it was to decide if I could afford buying a big house using some RSUs th
 
 ## On data and APIs
 I manually copied in my personal data when I did this exercise.
-Its probably possible to do that with the companies APIs, but that was not worth it for me.
+Its probably possible to do that with the bank APIs, but that was not worth it for me.
 
 I did download unvested stock information from etrade, and I included very rudimentary support for that.
 You will need to download a specific file from etrade and put it [here](./data_inputs) and tell the source code where to find it in your simulation.
