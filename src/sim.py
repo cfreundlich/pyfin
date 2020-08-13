@@ -17,7 +17,7 @@ class Sim:
     def __init__(self,
                  bank_account: BankAccount,
                  stock_market_rate_of_return=3e-2,
-                 days_to_simulate=365 * 10) -> None:
+                 days_to_simulate=365 * 30) -> None:
         self.bank = bank_account
         self.all_events = list()
         self.stock_market_rate_of_return = stock_market_rate_of_return

@@ -12,10 +12,10 @@ from src.property_tax import PropertyTax
 from src.rsu import RestrictedStock
 from src.salary import Salary
 from src.sim import Sim
+import src.today
 
 
 LOGGER = logging.getLogger()
-import src.today
 TODAY = src.today.today()
 
 
@@ -36,7 +36,7 @@ BIG_TAX_HIT_DUE = datetime.date(year=2021, month=4, day=15)
 
 INCOME_TAX_RATE = 0.4
 
-PURCHASE_PRICE = 1.0e6
+PURCHASE_PRICE = 1.5e6
 DOWNPAYMENT_HELP = 0.
 INTEREST_RATE_30_YR = 3.2e-2
 MOVE_IN_EXPENSE = 5e4
@@ -109,7 +109,7 @@ EVENTS = dict(
 
 
 plt.figure()
-sim_share_prices = [max(0, CURRENT_COMPANY_SHARE_PRICE + i*5e1)
+sim_share_prices = [max(0, CURRENT_COMPANY_SHARE_PRICE + i*1e2)
                     for i in range(-2, 3)]
 for share_price in sim_share_prices:
     events = copy.deepcopy(EVENTS)
@@ -121,7 +121,7 @@ for share_price in sim_share_prices:
     simulation.run()
     simulation.plot(label=share_price)
 plt.title('Company share price')
-plt.ylabel('Net Worth ($)')
+plt.ylabel('Liquid Assets ($)')
 plt.legend()
 
 plt.figure()
@@ -135,7 +135,7 @@ for salary_next_job in [SALARY_IN_CURRENT_JOB + 3e4*i for i in range(-2, 3)]:
     simulation.run()
     simulation.plot(label=salary_next_job/1e3)
 plt.title('Next Job Salary ($k)')
-plt.ylabel('Net Worth ($)')
+plt.ylabel('Liquid Assets ($)')
 plt.legend()
 
 plt.figure()
@@ -158,7 +158,7 @@ for more_years_in_role in range(1, 5):
     simulation.run()
     simulation.plot(label=more_years_in_role)
 plt.title('More years at current job')
-plt.ylabel('Net Worth ($)')
+plt.ylabel('Liquid Assets ($)')
 plt.legend()
 
 
@@ -179,5 +179,5 @@ for purchase_price in prices:
     simulation.run()
     simulation.plot(label=round(purchase_price/1e6, 3))
 plt.title('Purchase Price ($M)')
-plt.ylabel('Net Worth ($)')
+plt.ylabel('Liquid Assets ($)')
 plt.legend()
